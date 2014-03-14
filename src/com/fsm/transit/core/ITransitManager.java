@@ -3,9 +3,8 @@ package com.fsm.transit.core;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import com.fsm.transit.example.FragmentAction;
-import com.fsm.transit.bridge.FragmentAnimation;
 import com.fsm.transit.bridge.FragmentActivity;
+import com.fsm.transit.bridge.FragmentAnimation;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +13,7 @@ import com.fsm.transit.bridge.FragmentActivity;
  * Time: 1:34 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface ITransitManager {
+public interface ITransitManager<E> {
     void setCurrentContainer(int currentBranch);
 
     void switchBranch(Class<? extends Fragment> fragmentClass);
@@ -48,7 +47,7 @@ public interface ITransitManager {
      * @param action          - action what do in this moment
      * @param bundle          - storage for next fragment
      */
-    void switchFragment(Fragment currentFragment, FragmentAction action, Bundle bundle);
+    void switchFragment(Fragment currentFragment, E action, Bundle bundle);
 
 
     /**
@@ -57,7 +56,7 @@ public interface ITransitManager {
      * @param currentFragment - instance for current active fragment
      * @param action          - action what do in this moment
      */
-    void switchFragment(Fragment currentFragment, FragmentAction action);
+    void switchFragment(Fragment currentFragment, E action);
 
     void addSwitchListener(FragmentSwitchListener listener);
 

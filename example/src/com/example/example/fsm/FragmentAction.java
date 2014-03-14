@@ -1,4 +1,4 @@
-package com.fsm.transit.example;
+package com.example.example.fsm;
 
 /**
  * Created with IntelliJ IDEA.

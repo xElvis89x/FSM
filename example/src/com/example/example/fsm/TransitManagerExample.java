@@ -1,6 +1,7 @@
-package com.fsm.transit.example;
+package com.example.example.fsm;
 
-import android.support.v4.app.Fragment;
+import com.example.example.fragment.Test2Fragment;
+import com.example.example.fragment.TestFragment;
 import com.fsm.transit.core.AbstractTransitManger;
 import com.fsm.transit.core.TransitData;
 import com.fsm.transit.core.TransitResultData;
@@ -12,23 +13,20 @@ import com.fsm.transit.core.TransitResultData;
  * Time: 1:44 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ZExample extends AbstractTransitManger<FragmentAction> {
+public class TransitManagerExample extends AbstractTransitManger<FragmentAction> {
 
     /**
      * Pass {@link com.fsm.transit.bridge.FragmentActivity} in args
      *
      * @param activity {@link com.fsm.transit.bridge.FragmentActivity}
      */
-    public ZExample(com.fsm.transit.bridge.FragmentActivity activity) {
+    public TransitManagerExample(com.fsm.transit.bridge.FragmentActivity activity) {
         super(activity);
     }
 
     {
-        transitionsMap.put(new TransitData<FragmentAction>(F1.class, FragmentAction.ACTION_CARD_BUTTON), new TransitResultData<FragmentAction>(F1.class));
+        transitionsMap.put(new TransitData<FragmentAction>(TestFragment.class, FragmentAction.ACTION_CARD_BUTTON), new TransitResultData<FragmentAction>(Test2Fragment.class));
     }
 
-    public static class F1 extends Fragment {
-
-    }
 
 }
