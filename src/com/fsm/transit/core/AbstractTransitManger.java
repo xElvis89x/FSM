@@ -5,9 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import com.fsm.transit.FragmentAction;
-import com.fsm.transit.FragmentAnimation;
 import com.fsm.transit.bridge.FragmentActivity;
+import com.fsm.transit.bridge.FragmentAnimation;
+import com.fsm.transit.example.FragmentAction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,14 +26,13 @@ import java.util.Map;
  * This class is responsible for the overall logic of the transition and the transition between fragments.
  * Such as: switching fragments, adding / deleting the stack processing pressing the back.
  */
-public abstract class AbstractTransitManger implements ITransitManager {
+public abstract class AbstractTransitManger<E> implements ITransitManager {
     public static final String TAG = "FSM";
     protected FragmentActivity activity;
     protected int currentContainer;
-    private List<FragmentSwitchListener> fragmentSwitchListeners = new ArrayList<FragmentSwitchListener>();
-    private BackPressListener backPressListener;
-    protected Map<TransitData, TransitResultData> transitionsMap = new HashMap<TransitData, TransitResultData>();
-
+    protected List<FragmentSwitchListener> fragmentSwitchListeners = new ArrayList<FragmentSwitchListener>();
+    protected BackPressListener backPressListener;
+    protected Map<TransitData<E>, TransitResultData<E>> transitionsMap = new HashMap<TransitData<E>, TransitResultData<E>>();
 
     @Override
     public void switchBranch(Class<? extends Fragment> fragmentClass) {

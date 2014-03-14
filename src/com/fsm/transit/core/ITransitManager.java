@@ -3,9 +3,9 @@ package com.fsm.transit.core;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import com.fsm.transit.FragmentAction;
-import com.fsm.transit.FragmentAnimation;
+import com.fsm.transit.example.FragmentAction;
+import com.fsm.transit.bridge.FragmentAnimation;
+import com.fsm.transit.bridge.FragmentActivity;
 
 /**
  * Created with IntelliJ IDEA.

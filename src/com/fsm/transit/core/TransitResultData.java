@@ -1,7 +1,7 @@
 package com.fsm.transit.core;
 
 import android.support.v4.app.Fragment;
-import com.fsm.transit.FragmentAnimation;
+import com.fsm.transit.bridge.FragmentAnimation;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,7 +10,7 @@ import com.fsm.transit.FragmentAnimation;
  * Time: 5:23 PM
  * To change this template use File | Settings | File Templates.
  */
-public class TransitResultData {
+public class TransitResultData<E> {
     private Class<? extends Fragment> clazz;
     private boolean addToBack;
     private FragmentAnimation animation;

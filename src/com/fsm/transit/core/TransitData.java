@@ -1,7 +1,6 @@
 package com.fsm.transit.core;
 
 import android.support.v4.app.Fragment;
-import com.fsm.transit.FragmentAction;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,11 +9,11 @@ import com.fsm.transit.FragmentAction;
  * Time: 10:47 AM
  * To change this template use File | Settings | File Templates.
  */
-public class TransitData {
+public class TransitData<E> {
     private Class<? extends Fragment> stateClass;
-    private FragmentAction action;
+    private E action;
 
-    public TransitData(Class<? extends Fragment> stateClass, FragmentAction action) {
+    public TransitData(Class<? extends Fragment> stateClass, E action) {
         this.stateClass = stateClass;
         this.action = action;
     }
