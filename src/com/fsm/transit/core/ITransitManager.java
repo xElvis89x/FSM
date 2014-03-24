@@ -1,9 +1,9 @@
 package com.fsm.transit.core;
 
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import com.fsm.transit.bridge.FragmentActivity;
 import com.fsm.transit.bridge.FragmentAnimation;
 
 /**
@@ -18,7 +18,7 @@ public interface ITransitManager<E> {
 
     void switchBranch(Class<? extends Fragment> fragmentClass);
 
-    void setActivity(FragmentActivity activity);
+    void setActivity(Activity activity);
 
 
     /**

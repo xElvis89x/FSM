@@ -1,7 +1,7 @@
 package com.example.example.fragment;
 
 
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 
 /**
  * Created with IntelliJ IDEA.

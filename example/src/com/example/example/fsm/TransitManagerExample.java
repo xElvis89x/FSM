@@ -1,5 +1,6 @@
 package com.example.example.fsm;
 
+import android.app.Activity;
 import com.example.example.fragment.Test2Fragment;
 import com.example.example.fragment.TestFragment;
 import com.fsm.transit.core.AbstractTransitManger;
@@ -16,11 +17,11 @@ import com.fsm.transit.core.TransitResultData;
 public class TransitManagerExample extends AbstractTransitManger<FragmentAction> {
 
     /**
-     * Pass {@link com.fsm.transit.bridge.FragmentActivity} in args
+     * Pass {@link android.app.Activity} in args
      *
-     * @param activity {@link com.fsm.transit.bridge.FragmentActivity}
+     * @param activity {@link android.app.Activity}
      */
-    public TransitManagerExample(com.fsm.transit.bridge.FragmentActivity activity) {
+    public TransitManagerExample(Activity activity) {
         super(activity);
     }
 

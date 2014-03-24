@@ -1,11 +1,11 @@
 package com.fsm.transit.core;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import com.fsm.transit.bridge.FragmentActivity;
 import com.fsm.transit.bridge.FragmentAnimation;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
     public static final String TAG = "FSM";
-    protected FragmentActivity activity;
+    protected Activity activity;
     protected int currentContainer;
     protected List<FragmentSwitchListener> fragmentSwitchListeners = new ArrayList<FragmentSwitchListener>();
     protected BackPressListener backPressListener;
@@ -35,7 +35,7 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
 
     @Override
     public void switchBranch(Class<? extends Fragment> fragmentClass) {
-        if (!activity.getSupportFragmentManager().getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals(fragmentClass.getName())) {
+        if (!activity.getFragmentManager().getBackStackEntryAt(activity.getFragmentManager().getBackStackEntryCount() - 1).getName().equals(fragmentClass.getName())) {
             clearBackStack(0);
             switchFragment(fragmentClass);
         }
@@ -52,11 +52,11 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
     }
 
     /**
-     * Pass {@link FragmentActivity} in args
+     * Pass {@link Activity} in args
      *
-     * @param activity {@link FragmentActivity}
+     * @param activity {@link Activity}
      */
-    public AbstractTransitManger(FragmentActivity activity) {
+    public AbstractTransitManger(Activity activity) {
         this.activity = activity;
     }
 
@@ -73,9 +73,9 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
     /**
      * Set current context
      *
-     * @param activity {@link FragmentActivity}
+     * @param activity {@link Activity}
      */
-    public void setActivity(FragmentActivity activity) {
+    public void setActivity(Activity activity) {
         this.activity = activity;
     }
 
@@ -85,7 +85,7 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
      * @param count N fragments that should be removed.
      */
     protected void clearBackStack(int count) {
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        FragmentManager fragmentManager = activity.getFragmentManager();
         for (int i = count; i < fragmentManager.getBackStackEntryCount(); i++) {
             fragmentManager.popBackStack();
         }
@@ -147,7 +147,7 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
     @Override
     public void switchFragment(Class<? extends Fragment> fragmentClass, Bundle bundle, FragmentAnimation transitAnimation, boolean addToBackStack) {
         deleteCycle(fragmentClass);
-        FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = activity.getFragmentManager().beginTransaction();
         if (transitAnimation != FragmentAnimation.NONE) {
             fragmentTransaction.setCustomAnimations(transitAnimation.getInAnimation(), transitAnimation.getOutAnimation());
         }
@@ -170,15 +170,15 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
 
 
     protected void deleteCycle(Class<? extends Fragment> fragmentClass) {
-        if (activity.getSupportFragmentManager().findFragmentByTag(fragmentClass.getName()) != null) {
+        if (activity.getFragmentManager().findFragmentByTag(fragmentClass.getName()) != null) {
             int count = 0;
-            for (int i = activity.getSupportFragmentManager().getBackStackEntryCount() - 1; i >= 0; i--) {
-                if (activity.getSupportFragmentManager().getBackStackEntryAt(i).getName().equals(fragmentClass.getName())) {
+            for (int i = activity.getFragmentManager().getBackStackEntryCount() - 1; i >= 0; i--) {
+                if (activity.getFragmentManager().getBackStackEntryAt(i).getName().equals(fragmentClass.getName())) {
                     count++;
                 }
             }
             for (int i = 0; i < count + 1; i++) {
-                activity.getSupportFragmentManager().popBackStack();
+                activity.getFragmentManager().popBackStack();
             }
         }
     }
@@ -236,9 +236,9 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
     public boolean back() {
         boolean result = fireBackPress();
         if (!result) {
-            result = activity.getSupportFragmentManager().getBackStackEntryCount() >= 1;
+            result = activity.getFragmentManager().getBackStackEntryCount() >= 1;
             if (result) {
-                activity.getSupportFragmentManager().popBackStack();
+                activity.getFragmentManager().popBackStack();
             }
         }
         return result;

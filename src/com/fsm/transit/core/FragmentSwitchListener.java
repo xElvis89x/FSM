@@ -1,7 +1,7 @@
 package com.fsm.transit.core;
 
 
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 
 /**
  * Created with IntelliJ IDEA.
