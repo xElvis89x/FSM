@@ -35,7 +35,8 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
 
     @Override
     public void switchBranch(Class<? extends Fragment> fragmentClass) {
-        if (!activity.getFragmentManager().getBackStackEntryAt(activity.getFragmentManager().getBackStackEntryCount() - 1).getName().equals(fragmentClass.getName())) {
+        if (activity.getFragmentManager().getBackStackEntryCount() == 0
+                || !activity.getFragmentManager().getBackStackEntryAt(activity.getFragmentManager().getBackStackEntryCount() - 1).getName().equals(fragmentClass.getName())) {
             clearBackStack(0);
             switchFragment(fragmentClass);
         }
