@@ -252,6 +252,13 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
     }
 
     @Override
+    public Fragment getCurrentFragment() {
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        List<Fragment> fragmentList = fragmentManager.getFragments();
+        return null;
+    }
+
+    @Override
     public void removeSwitchListener(FragmentSwitchListener listener) {
         fragmentSwitchListeners.remove(listener);
     }

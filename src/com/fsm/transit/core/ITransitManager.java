@@ -64,5 +64,7 @@ public interface ITransitManager<E> {
 
     void setBackPressListener(BackPressListener listener);
 
+    Fragment getCurrentFragment();
+
     boolean back();
 }
