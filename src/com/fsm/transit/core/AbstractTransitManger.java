@@ -245,6 +245,10 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
         return result;
     }
 
+    public Fragment getCurrentFragment() {
+        return activity.getFragmentManager().findFragmentById(currentContainer);
+    }
+
     @Override
     public void addSwitchListener(FragmentSwitchListener listener) {
         if (listener != null) {

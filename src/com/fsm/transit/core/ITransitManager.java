@@ -3,6 +3,7 @@ package com.fsm.transit.core;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import com.fsm.transit.bridge.FragmentAnimation;
 
@@ -63,6 +64,8 @@ public interface ITransitManager<E> {
     void removeSwitchListener(FragmentSwitchListener listener);
 
     void setBackPressListener(BackPressListener listener);
+
+    Fragment getCurrentFragment();
 
     boolean back();
 }
