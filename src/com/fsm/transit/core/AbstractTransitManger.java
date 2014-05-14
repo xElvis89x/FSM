@@ -253,9 +253,7 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
 
     @Override
     public Fragment getCurrentFragment() {
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        List<Fragment> fragmentList = fragmentManager.getFragments();
-        return null;
+        return activity.getSupportFragmentManager().findFragmentById(currentContainer);
     }
 
     @Override
