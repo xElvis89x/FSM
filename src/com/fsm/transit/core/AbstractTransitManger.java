@@ -149,7 +149,7 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
         deleteCycle(fragmentClass);
         FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
         if (transitAnimation != FragmentAnimation.NONE) {
-            fragmentTransaction.setCustomAnimations(transitAnimation.getInAnimation(), transitAnimation.getOutAnimation());
+            fragmentTransaction.setCustomAnimations(transitAnimation.getEnter(), transitAnimation.getExit(),transitAnimation.getPopEnter(),transitAnimation.getPopExit());
         }
         Fragment fragment = Fragment.instantiate(activity.getBaseContext(), fragmentClass.getName());
         if (bundle != null) {
