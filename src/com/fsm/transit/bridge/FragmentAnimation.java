@@ -11,19 +11,40 @@ package com.fsm.transit.bridge;
 public class FragmentAnimation {
     public static final FragmentAnimation NONE = new FragmentAnimation(-1, -1);
 
-    private int inAnim;
-    private int outAnim;
+    private int enter;
+    private int ext;
 
-    public FragmentAnimation(int outAnimation, int inAnimation) {
-        this.outAnim = outAnimation;
-        this.inAnim = inAnimation;
+    private int popEnter;
+    private int popExit;
+
+    public FragmentAnimation(int enter, int exit, int popEnter, int popExit) {
+        this.enter = enter;
+        this.ext = exit;
+        this.popEnter = popEnter;
+        this.popExit = popExit;
     }
 
-    public int getInAnimation() {
-        return inAnim;
+
+    public FragmentAnimation(int inAnimation,int outAnimation) {
+        this.enter = inAnimation;
+        this.ext = outAnimation;
     }
 
-    public int getOutAnimation() {
-        return outAnim;
+
+    public int getEnter() {
+        return enter;
+    }
+
+    public int getExit() {
+        return ext;
+    }
+
+
+    public int getPopEnter() {
+        return popEnter;
+    }
+
+    public int getPopExit() {
+        return popExit;
     }
 }
