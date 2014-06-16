@@ -157,9 +157,13 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
             fragment.setArguments(bundle);
         }
         fragmentTransaction.replace(currentContainer, fragment, getBackStackName(fragmentClass, bundle));
-        if (addToBackStack) {
-            fragmentTransaction.addToBackStack(getBackStackName(fragmentClass, bundle));
-        }
+//        if (addToBackStack) {
+//            fragmentTransaction.addToBackStack(getBackStackName(fragmentClass, bundle));
+//        }
+
+        fragmentTransaction.addToBackStack(getBackStackName(fragmentClass, bundle));
+        if (!addToBackStack) activity.getFragmentManager().popBackStack();
+
         fragmentTransaction.commitAllowingStateLoss();
         fireSwitchFragment(fragment);
     }
