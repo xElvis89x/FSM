@@ -35,10 +35,8 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
 
     @Override
     public void switchBranch(Class<? extends Fragment> fragmentClass) {
-        if (!activity.getSupportFragmentManager().getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals(fragmentClass.getName())) {
-            clearBackStack(0);
-            switchFragment(fragmentClass);
-        }
+        clearBackStack(0);
+        switchFragment(fragmentClass);
     }
 
     /**
@@ -85,9 +83,10 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
      * @param count N fragments that should be removed.
      */
     protected void clearBackStack(int count) {
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        for (int i = count; i < fragmentManager.getBackStackEntryCount(); i++) {
-            fragmentManager.popBackStack();
+        FragmentManager fragmentManager = activity.getFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > count) {
+            FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(count);
+            fragmentManager.popBackStack(backStackEntry.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
     }
 
@@ -156,9 +155,13 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
             fragment.setArguments(bundle);
         }
         fragmentTransaction.replace(currentContainer, fragment, getBackStackName(fragmentClass, bundle));
-        if (addToBackStack) {
-            fragmentTransaction.addToBackStack(getBackStackName(fragmentClass, bundle));
-        }
+//        if (addToBackStack) {
+//            fragmentTransaction.addToBackStack(getBackStackName(fragmentClass, bundle));
+//        }
+
+        fragmentTransaction.addToBackStack(getBackStackName(fragmentClass, bundle));
+        if (!addToBackStack) activity.getSupportFragmentManager().popBackStack();
+
         fragmentTransaction.commitAllowingStateLoss();
         fireSwitchFragment(fragment);
     }
