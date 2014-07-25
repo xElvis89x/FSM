@@ -3,7 +3,6 @@ package com.fsm.transit.core;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
 import com.fsm.transit.bridge.FragmentAnimation;
 
@@ -58,6 +57,21 @@ public interface ITransitManager<E> {
      * @param action          - action what do in this moment
      */
     void switchFragment(Fragment currentFragment, E action);
+
+    /**
+     * FSM switch fragment use action and known current fragment
+     *
+     * @param action
+     */
+    void switchFragment(E action);
+
+    /**
+     * FSM switch fragmnet use action and know current fragment
+     *
+     * @param action
+     * @param bundle - bundle for new fragment
+     */
+    void switchFragment(E action, Bundle bundle);
 
     void addSwitchListener(FragmentSwitchListener listener);
 
