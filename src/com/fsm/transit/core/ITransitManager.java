@@ -63,7 +63,7 @@ public interface ITransitManager<E> {
      *
      * @param action
      */
-    void switchFragment(E action);
+    void switchBy(E action);
 
     /**
      * FSM switch fragmnet use action and know current fragment
@@ -71,7 +71,7 @@ public interface ITransitManager<E> {
      * @param action
      * @param bundle - bundle for new fragment
      */
-    void switchFragment(E action, Bundle bundle);
+    void switchBy(E action, Bundle bundle);
 
     void addSwitchListener(FragmentSwitchListener listener);
 

@@ -231,12 +231,12 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
     }
 
     @Override
-    public void switchFragment(E action) {
+    public void switchBy(E action) {
         switchFragment(getCurrentFragment(), action);
     }
 
     @Override
-    public void switchFragment(E action, Bundle bundle) {
+    public void switchBy(E action, Bundle bundle) {
         switchFragment(getCurrentFragment(), action, bundle);
     }
 
