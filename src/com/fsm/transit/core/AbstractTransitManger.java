@@ -173,15 +173,16 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
 
 
     protected void deleteCycle(Class<? extends Fragment> fragmentClass) {
-        if (activity.getFragmentManager().findFragmentByTag(fragmentClass.getName()) != null) {
-            int count = 0;
-            for (int i = activity.getFragmentManager().getBackStackEntryCount() - 1; i >= 0; i--) {
-                if (activity.getFragmentManager().getBackStackEntryAt(i).getName().equals(fragmentClass.getName())) {
-                    count++;
+        FragmentManager fragmentManager = activity.getFragmentManager();
+        if (fragmentManager.findFragmentByTag(fragmentClass.getName()) != null) {
+            int backID = -1;
+            for (int i = fragmentManager.getBackStackEntryCount() - 1; i >= 0; i--) {
+                if (fragmentManager.getBackStackEntryAt(i).getName().equals(fragmentClass.getName())) {
+                    backID = i;
                 }
             }
-            for (int i = 0; i < count + 1; i++) {
-                activity.getFragmentManager().popBackStack();
+            if (backID != -1) {
+                fragmentManager.popBackStack(backID, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         }
     }
