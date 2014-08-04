@@ -35,8 +35,13 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
 
     @Override
     public void switchBranch(Class<? extends Fragment> fragmentClass) {
+        switchBranch(fragmentClass, null);
+    }
+
+    @Override
+    public void switchBranch(Class<? extends Fragment> fragmentClass, Bundle bundle) {
         clearBackStack(0);
-        switchFragment(fragmentClass);
+        switchFragment(fragmentClass, bundle);
     }
 
     /**
@@ -83,7 +88,7 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
      * @param count N fragments that should be removed.
      */
     protected void clearBackStack(int count) {
-        FragmentManager fragmentManager = activity.getFragmentManager();
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
         if (fragmentManager.getBackStackEntryCount() > count) {
             FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(count);
             fragmentManager.popBackStack(backStackEntry.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -173,15 +178,16 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
 
 
     protected void deleteCycle(Class<? extends Fragment> fragmentClass) {
-        if (activity.getSupportFragmentManager().findFragmentByTag(fragmentClass.getName()) != null) {
-            int count = 0;
-            for (int i = activity.getSupportFragmentManager().getBackStackEntryCount() - 1; i >= 0; i--) {
-                if (activity.getSupportFragmentManager().getBackStackEntryAt(i).getName().equals(fragmentClass.getName())) {
-                    count++;
+        FragmentManager supportFragmentManager = activity.getSupportFragmentManager();
+        if (supportFragmentManager.findFragmentByTag(fragmentClass.getName()) != null) {
+            int backID = 0;
+            for (int i = supportFragmentManager.getBackStackEntryCount() - 1; i >= 0; i--) {
+                if (supportFragmentManager.getBackStackEntryAt(i).getName().equals(fragmentClass.getName())) {
+                    backID = supportFragmentManager.getBackStackEntryAt(i).getId();
                 }
             }
-            for (int i = 0; i < count + 1; i++) {
-                activity.getSupportFragmentManager().popBackStack();
+            if (backID != -1) {
+                supportFragmentManager.popBackStack(backID, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         }
     }

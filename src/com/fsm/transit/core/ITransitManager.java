@@ -18,6 +18,8 @@ public interface ITransitManager<E> {
 
     void switchBranch(Class<? extends Fragment> fragmentClass);
 
+    void switchBranch(Class<? extends Fragment> fragmentClass, Bundle bundle);
+
     void setActivity(FragmentActivity activity);
 
 
