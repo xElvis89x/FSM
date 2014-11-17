@@ -3,7 +3,7 @@ package com.example.example.fsm;
 import android.app.Activity;
 import com.example.example.fragment.Test2Fragment;
 import com.example.example.fragment.TestFragment;
-import com.fsm.transit.core.AbstractTransitManger;
+import com.fsm.transit.core.AbstractTransitManager;
 import com.fsm.transit.core.TransitData;
 import com.fsm.transit.core.TransitResultData;
 
@@ -14,7 +14,7 @@ import com.fsm.transit.core.TransitResultData;
  * Time: 1:44 PM
  * To change this template use File | Settings | File Templates.
  */
-public class TransitManagerExample extends AbstractTransitManger<FragmentAction> {
+public class TransitManagerExample extends AbstractTransitManager<FragmentAction> {
 
     /**
      * Pass {@link android.app.Activity} in args

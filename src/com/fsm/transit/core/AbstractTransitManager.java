@@ -26,7 +26,7 @@ import java.util.Map;
  * This class is responsible for the overall logic of the transition and the transition between fragments.
  * Such as: switching fragments, adding / deleting the stack processing pressing the back.
  */
-public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
+public abstract class AbstractTransitManager<E> implements ITransitManager<E> {
     public static final String TAG = "FSM";
     protected Activity activity;
     protected int currentContainer;
@@ -55,7 +55,7 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
      *
      * @param activity {@link Activity}
      */
-    public AbstractTransitManger(Activity activity) {
+    public AbstractTransitManager(Activity activity) {
         this.activity = activity;
     }
 
