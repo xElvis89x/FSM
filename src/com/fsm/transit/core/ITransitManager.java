@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import com.fsm.transit.bridge.FragmentAnimation;
+import com.fsm.transit.core.model.FragmentArgs;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +17,7 @@ import com.fsm.transit.bridge.FragmentAnimation;
 public interface ITransitManager<E> {
     void setCurrentContainer(int currentBranch);
 
-    void switchBranch(Class<? extends Fragment> fragmentClass);
+    <T extends Fragment> T switchBranch(Class<T> fragmentClass);
 
     void setActivity(Activity activity);
 
@@ -26,19 +27,21 @@ public interface ITransitManager<E> {
      *
      * @param fragmentClass
      */
-    void switchFragment(Class<? extends Fragment> fragmentClass);
+    <T extends Fragment> T switchFragment(Class<T> fragmentClass);
 
-    void switchFragment(Class<? extends Fragment> fragmentClass, Bundle bundle);
+    <T extends Fragment> T switchFragment(Class<T> fragmentClass, Bundle bundle);
 
-    void switchFragment(Class<? extends Fragment> fragmentClass, Bundle bundle, boolean addToBackStack);
+    <T extends Fragment> T switchFragment(Class<T> fragmentClass, Bundle bundle, boolean addToBackStack);
 
-    void switchFragment(Class<? extends Fragment> fragmentClass, FragmentAnimation transitAnimation, boolean addToBackStack);
+    <T extends Fragment> T switchFragment(Class<T> fragmentClass, FragmentAnimation transitAnimation, boolean addToBackStack);
 
-    void switchFragment(Class<? extends Fragment> fragmentClass, FragmentAnimation transitAnimation);
+    <T extends Fragment> T switchFragment(Class<T> fragmentClass, FragmentAnimation transitAnimation);
 
-    void switchFragment(Class<? extends Fragment> fragmentClass, Bundle bundle, FragmentAnimation transitAnimation);
+    <T extends Fragment> T switchFragment(Class<T> fragmentClass, Bundle bundle, FragmentAnimation transitAnimation);
 
-    void switchFragment(Class<? extends Fragment> fragmentClass, Bundle bundle, FragmentAnimation transitAnimation, boolean addToBackStack);
+    <T extends Fragment> T switchFragment(Class<T> fragmentClass, Bundle bundle, FragmentAnimation transitAnimation, boolean addToBackStack);
+
+    <T extends Fragment> T switchFragment(Class<T> fragmentClass, FragmentArgs fragmentArgs, FragmentAnimation transitAnimation, boolean addToBackStack);
 
     /**
      * FSM logic method
@@ -47,7 +50,7 @@ public interface ITransitManager<E> {
      * @param action          - action what do in this moment
      * @param bundle          - storage for next fragment
      */
-    void switchFragment(Fragment currentFragment, E action, Bundle bundle);
+    Fragment switchFragment(Fragment currentFragment, E action, Bundle bundle);
 
 
     /**
@@ -56,14 +59,17 @@ public interface ITransitManager<E> {
      * @param currentFragment - instance for current active fragment
      * @param action          - action what do in this moment
      */
-    void switchFragment(Fragment currentFragment, E action);
+    Fragment switchFragment(Fragment currentFragment, E action);
+
+
+    Fragment switchFragment(Fragment currentFragment, E action, FragmentArgs fragmentArgs);
 
     /**
      * FSM switch fragment use action and known current fragment
      *
      * @param action
      */
-    void switchBy(E action);
+    Fragment switchBy(E action);
 
     /**
      * FSM switch fragmnet use action and know current fragment
@@ -71,7 +77,15 @@ public interface ITransitManager<E> {
      * @param action
      * @param bundle - bundle for new fragment
      */
-    void switchBy(E action, Bundle bundle);
+    Fragment switchBy(E action, Bundle bundle);
+
+    /**
+     * FSM switch fragmnet use action and know current fragment
+     *
+     * @param action
+     * @param fragmentArgs - data for new fragment
+     */
+    Fragment switchBy(E action, FragmentArgs fragmentArgs);
 
     void addSwitchListener(FragmentSwitchListener listener);
 

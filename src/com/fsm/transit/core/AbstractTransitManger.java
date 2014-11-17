@@ -7,6 +7,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import com.fsm.transit.bridge.FragmentAnimation;
+import com.fsm.transit.core.model.FragmentArgs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,9 +35,9 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
     protected Map<TransitData<E>, TransitResultData<E>> transitionsMap = new HashMap<TransitData<E>, TransitResultData<E>>();
 
     @Override
-    public void switchBranch(Class<? extends Fragment> fragmentClass) {
+    public <T extends Fragment> T switchBranch(Class<T> fragmentClass) {
         clearBackStack(0);
-        switchFragment(fragmentClass);
+        return switchFragment(fragmentClass);
     }
 
     /**
@@ -96,8 +97,8 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
      * @param fragmentClass Class for instantiation fragment.
      */
     @Override
-    public void switchFragment(Class<? extends Fragment> fragmentClass) {
-        switchFragment(fragmentClass, (Bundle) null);
+    public <T extends Fragment> T switchFragment(Class<T> fragmentClass) {
+        return switchFragment(fragmentClass, (Bundle) null);
     }
 
     /**
@@ -107,8 +108,8 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
      * @param bundle        arguments, passing between fragments
      */
     @Override
-    public void switchFragment(Class<? extends Fragment> fragmentClass, Bundle bundle) {
-        switchFragment(fragmentClass, bundle, true);
+    public <T extends Fragment> T switchFragment(Class<T> fragmentClass, Bundle bundle) {
+        return switchFragment(fragmentClass, bundle, true);
     }
 
     /**
@@ -119,8 +120,8 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
      * @param addToBackStack if true, current transaction would be adding to the backstack. Perform back press invoked rollback.
      */
     @Override
-    public void switchFragment(Class<? extends Fragment> fragmentClass, Bundle bundle, boolean addToBackStack) {
-        switchFragment(fragmentClass, bundle, FragmentAnimation.NONE, addToBackStack);
+    public <T extends Fragment> T switchFragment(Class<T> fragmentClass, Bundle bundle, boolean addToBackStack) {
+        return switchFragment(fragmentClass, bundle, FragmentAnimation.NONE, addToBackStack);
     }
 
     /**
@@ -131,8 +132,8 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
      * @param transitAnimation override animation between current fragment and fragmentClass instance.
      */
     @Override
-    public void switchFragment(Class<? extends Fragment> fragmentClass, Bundle bundle, FragmentAnimation transitAnimation) {
-        switchFragment(fragmentClass, bundle, transitAnimation, false);
+    public <T extends Fragment> T switchFragment(Class<T> fragmentClass, Bundle bundle, FragmentAnimation transitAnimation) {
+        return switchFragment(fragmentClass, bundle, transitAnimation, false);
     }
 
     /**
@@ -144,26 +145,41 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
      * @param addToBackStack   if true, current transaction would be adding to the backstack. Perform back press invoked rollback.
      */
     @Override
-    public void switchFragment(Class<? extends Fragment> fragmentClass, Bundle bundle, FragmentAnimation transitAnimation, boolean addToBackStack) {
+    public <T extends Fragment> T switchFragment(Class<T> fragmentClass, Bundle bundle, FragmentAnimation transitAnimation, boolean addToBackStack) {
+        return switchFragment(fragmentClass, new FragmentArgs(bundle, null), transitAnimation, addToBackStack);
+    }
+
+    /**
+     * Replace current fragment with Fragment with {@link Fragment} defined by argument.
+     *
+     * @param fragmentClass    - generic defined class for instantiation
+     * @param fragmentArgs     - arguments
+     * @param transitAnimation - animation for fragment transition
+     * @param addToBackStack   - back stack management
+     * @param <T>              - dynamic defined fragment
+     * @return - generic defined fragment
+     */
+    @Override
+    public <T extends Fragment> T switchFragment(Class<T> fragmentClass, FragmentArgs fragmentArgs, FragmentAnimation transitAnimation, boolean addToBackStack) {
+        if (fragmentArgs == null) fragmentArgs = new FragmentArgs();
         deleteCycle(fragmentClass);
         FragmentTransaction fragmentTransaction = activity.getFragmentManager().beginTransaction();
         if (transitAnimation != FragmentAnimation.NONE) {
             fragmentTransaction.setCustomAnimations(transitAnimation.getInAnimation(), transitAnimation.getOutAnimation());
         }
-        Fragment fragment = Fragment.instantiate(activity.getBaseContext(), fragmentClass.getName());
-        if (bundle != null) {
-            fragment.setArguments(bundle);
-        }
-        fragmentTransaction.replace(currentContainer, fragment, getBackStackName(fragmentClass, bundle));
+        T fragment = (T) Fragment.instantiate(activity.getBaseContext(), fragmentClass.getName(), fragmentArgs.getBundle());
+
+        fragmentTransaction.replace(currentContainer, fragment, getBackStackName(fragmentClass, fragmentArgs.getBundle()));
 //        if (addToBackStack) {
 //            fragmentTransaction.addToBackStack(getBackStackName(fragmentClass, bundle));
 //        }
 
-        fragmentTransaction.addToBackStack(getBackStackName(fragmentClass, bundle));
+        fragmentTransaction.addToBackStack(getBackStackName(fragmentClass, fragmentArgs.getBundle()));
         if (!addToBackStack) activity.getFragmentManager().popBackStack();
 
         fragmentTransaction.commitAllowingStateLoss();
         fireSwitchFragment(fragment);
+        return fragment;
     }
 
     protected String getBackStackName(Class<? extends Fragment> fragmentClass, Bundle bundle) {
@@ -195,8 +211,8 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
      * @param addToBackStack
      */
     @Override
-    public void switchFragment(Class<? extends Fragment> fragmentClass, FragmentAnimation transitAnimation, boolean addToBackStack) {
-        switchFragment(fragmentClass, null, transitAnimation, addToBackStack);
+    public <T extends Fragment> T switchFragment(Class<T> fragmentClass, FragmentAnimation transitAnimation, boolean addToBackStack) {
+        return switchFragment(fragmentClass, (FragmentArgs) null, transitAnimation, addToBackStack);
     }
 
     /**
@@ -206,8 +222,8 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
      * @param transitAnimation
      */
     @Override
-    public void switchFragment(Class<? extends Fragment> fragmentClass, FragmentAnimation transitAnimation) {
-        switchFragment(fragmentClass, null, transitAnimation);
+    public <T extends Fragment> T switchFragment(Class<T> fragmentClass, FragmentAnimation transitAnimation) {
+        return switchFragment(fragmentClass, null, transitAnimation);
     }
 
     /**
@@ -217,28 +233,39 @@ public abstract class AbstractTransitManger<E> implements ITransitManager<E> {
      * @param action          - action what do in this moment
      */
     @Override
-    public void switchFragment(Fragment currentFragment, E action) {
-        switchFragment(currentFragment, action, null);
+    public Fragment switchFragment(Fragment currentFragment, E action) {
+        return switchFragment(currentFragment, action, (Bundle) null);
     }
 
     @Override
-    public void switchFragment(Fragment currentFragment, E action, Bundle bundle) {
-        TransitResultData transitResultData = transitionsMap.get(new TransitData(currentFragment.getClass(), action));
+    public Fragment switchFragment(Fragment currentFragment, E action, FragmentArgs fragmentArgs) {
+        TransitResultData transitResultData = transitionsMap.get(new TransitData<E>(currentFragment.getClass(), action));
         if (transitResultData != null) {
-            switchFragment(transitResultData.getClazz(), bundle, transitResultData.getAnimation(), transitResultData.isAddToBack());
+            return switchFragment(transitResultData.getClazz(), fragmentArgs.getBundle(), transitResultData.getAnimation(), transitResultData.isAddToBack());
         } else {
             Log.e(TAG, "Not fragment found with name " + currentFragment.getClass().getSimpleName() + " for switch");
+            return null;
         }
     }
 
     @Override
-    public void switchBy(E action) {
-        switchFragment(getCurrentFragment(), action);
+    public Fragment switchFragment(Fragment currentFragment, E action, Bundle bundle) {
+        return switchFragment(currentFragment, action, new FragmentArgs(bundle, null));
     }
 
     @Override
-    public void switchBy(E action, Bundle bundle) {
-        switchFragment(getCurrentFragment(), action, bundle);
+    public Fragment switchBy(E action) {
+        return switchFragment(getCurrentFragment(), action);
+    }
+
+    @Override
+    public Fragment switchBy(E action, Bundle bundle) {
+        return switchFragment(getCurrentFragment(), action, bundle);
+    }
+
+    @Override
+    public Fragment switchBy(E action, FragmentArgs fragmentArgs) {
+        return switchFragment(getCurrentFragment(), action, fragmentArgs);
     }
 
     /**

@@ -1,32 +1,97 @@
-apply plugin: 'java'
-
-sourceCompatibility = 1.6
-version = '1.0'
-
-repositories {
-    mavenCentral()
+//apply plugin: 'java'
+//
+//sourceCompatibility = 1.6
+//version = '1.0'
+//
+//repositories {
+//    mavenCentral()
+//}
+//sourceSets {
+//    main {
+//        java {
+//            srcDir 'src'
+//        }
+//    }
+//}
+//
+//def getSdkDir() {
+//    def localProperties = new File(project.rootDir, "local.properties")
+//    def sdkDir = System.env.ANDROID_HOME
+//    if (sdkDir == null && localProperties.exists()) {
+//        Properties properties = new Properties()
+//        localProperties.withInputStream { instr ->
+//            properties.load(instr)
+//        }
+//        sdkDir = properties.getProperty('sdk.dir')
+//    }
+//    return sdkDir + "/platforms/android-19"
+//}
+//dependencies {
+//    compile fileTree(dir: getSdkDir(), include: ['*.jar'])
+//    compile fileTree(dir: 'libs', include: ['*.jar'])
+//}
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.13.2'
+    }
 }
-sourceSets {
-    main {
-        java {
-            srcDir 'src'
+
+
+apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
         }
     }
 }
 
-def getSdkDir() {
-    def localProperties = new File(project.rootDir, "local.properties")
-    def sdkDir = System.env.ANDROID_HOME
-    if (sdkDir == null && localProperties.exists()) {
-        Properties properties = new Properties()
-        localProperties.withInputStream { instr ->
-            properties.load(instr)
-        }
-        sdkDir = properties.getProperty('sdk.dir')
+
+android {
+    compileSdkVersion 20
+    buildToolsVersion '20.0.0'
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 19
+        versionCode 1
+        versionName '1.0'
     }
-    return sdkDir + "/platforms/android-19"
+
+    buildTypes {
+        debug {
+            debuggable true
+            runProguard false
+            zipAlign true
+        }
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+    }
+    /*packagingOptions {
+    exclude 'META-INF/DEPENDENCIES'
+    exclude 'META-INF/NOTICE'
+    exclude 'META-INF/LICENSE'
+    exclude 'META-INF/LICENSE.txt'
+    exclude 'META-INF/NOTICE.txt'
 }
-dependencies {
-    compile fileTree(dir: getSdkDir(), include: ['*.jar'])
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+lintOptions {
+    abortOnError false
+}
+dexOptions {
+    preDexLibraries = false
+}*/
 }
